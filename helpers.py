@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=Warning)
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -19,7 +19,8 @@ def count_sensitive_words(df_, word_list_, str_col='Short_Msg'):
         else:
             df_['{}_count'.format(next(iter(w.keys())))] = df_[str_col].str.count(r'|'.join(next(iter(w.values()))))
             
+    df_.columns = [c.replace(' ', '_') for c in df_.columns]
+            
     count_cols = [c for c in df_.columns if '_count' in c]
-    print(df_)
     
     return df_.resample('1D')[count_cols].sum()
