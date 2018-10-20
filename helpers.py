@@ -34,9 +34,6 @@ def count_sensitive_words(df_, word_list_, str_col='Short_Msg', companies_neg_po
             key, value = next(iter(w.keys())), next(iter(w.values()))
             df_['{}_{}_count'.format(c,key)] = df_['{}_count'.format(c)] * df_['{}_count'.format(key)]
             
-    # total number fo messages in a day
-    df_out['total_msg_count'] = total_msg
-    
     # rename column names
     df_.columns = [c.replace(' ', '_') for c in df_.columns]
     # get the subset, that is interesting (counts)
@@ -44,6 +41,10 @@ def count_sensitive_words(df_, word_list_, str_col='Short_Msg', companies_neg_po
     
     # output dataset grouped by day
     df_out = df_.resample('1D')[count_cols].sum()
+    
+    # total number fo messages in a day
+    df_out['total_msg_count'] = total_msg
+    
     del df_
     return df_out
 
